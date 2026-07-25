@@ -1,5 +1,5 @@
-from fastapi import FastAPI, APIRouter
-from db.database import sessionlocal
+from fastapi import FastAPI, Depends, APIRouter
+from db.database import get_db
 from sqlalchemy import text
 from schemas.user import User
 
@@ -8,8 +8,7 @@ router=APIRouter()
 
 
 @router.post("/reserve")
-def reserve(user:User):
-    db=sessionlocal()
+def reserve(user:User,db=Depends(get_db)):
     
     result=db.execute(
         text("SELECT quantity FROM tickets WHERE event_name=:event_name AND quantity>=:ticket "),
@@ -34,8 +33,7 @@ def reserve(user:User):
     
     
 @router.get("/movieslot/{event_name}")
-def movie_slot(event_name):
-    db=sessionlocal()
+def movie_slot(event_name,db=Depends(get_db)):
     
     result=db.execute(
         text("SELECT quantity FROM tickets WHERE event_name=:event_name"),
@@ -54,8 +52,7 @@ def movie_slot(event_name):
     
 
 @router.get("/event_name")
-def get_eventname():
-    db=sessionlocal()
+def get_eventname(db=Depends(get_db)):
     
     result=db.execute(
         text("SELECT event_name FROM tickets")
