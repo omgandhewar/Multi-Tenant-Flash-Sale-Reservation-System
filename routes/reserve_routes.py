@@ -11,17 +11,20 @@ router=APIRouter()
 def reserve(user:User):
     db=sessionlocal()
     
-    
     result=db.execute(
-        text("SELECT quantity FROM tickets WHERE quantity=:ticket"),
+        text("SELECT quantity FROM tickets WHERE quantity LIKE "),
         {
             "ticket":user.quantity
         }
     )
     
     user=result.fetchone()
+    
+    print(user)
+    
+    tickets=user[0]
         
-    if user<user.quantity:
+    if tickets<user.quantity:
         return{
             "message":"tickets are not available"
         }
@@ -29,4 +32,24 @@ def reserve(user:User):
         
     return{
         "message":"ticket are available"
+    }
+    
+    
+@router.get("/movieslot/{event_name}")
+def movie_slot(event_name):
+    db=sessionlocal()
+    
+    result=db.execute(
+        text("SELECT quantity FROM tickets WHERE event_name=:event_name"),
+        {
+            "event_name":event_name
+        }
+    )
+    
+    user=result.fetchone()
+    
+    quantity=user[0]
+    
+    return{
+        "slot":quantity
     }
