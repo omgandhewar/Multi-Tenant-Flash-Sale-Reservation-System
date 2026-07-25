@@ -12,23 +12,21 @@ def reserve(user:User):
     db=sessionlocal()
     
     result=db.execute(
-        text("SELECT quantity FROM tickets WHERE quantity LIKE "),
-        {
+        text("SELECT quantity FROM tickets WHERE event_name=:event_name AND quantity>=:ticket "),
+        {                     
+            "event_name":user.event_name,
             "ticket":user.quantity
         }
     )
     
     user=result.fetchone()
     
-    print(user)
-    
-    tickets=user[0]
-        
-    if tickets<user.quantity:
+    if not user:
         return{
             "message":"tickets are not available"
         }
-        
+    
+    tickets=user[0]
         
     return{
         "message":"ticket are available"
@@ -52,4 +50,21 @@ def movie_slot(event_name):
     
     return{
         "slot":quantity
+    }
+    
+
+@router.get("/event_name")
+def get_eventname():
+    db=sessionlocal()
+    
+    result=db.execute(
+        text("SELECT event_name FROM tickets")
+    )
+    
+    event_name=result.mappings().all()
+    
+    print(event_name)
+     
+    return{
+        "event_name":event_name
     }
