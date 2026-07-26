@@ -42,12 +42,18 @@ def movie_slot(event_name,db=Depends(get_db)):
         }
     )
     
-    user=result.fetchone()
+    user=result.mappings().first()
     
-    quantity=user[0]
+    if user is None:
+        return{
+            "message":"event is not available"
+        }
+    
+    print(user)
+    print(type(user))
     
     return{
-        "slot":quantity
+        "slot":user["quantity"]
     }
     
 
