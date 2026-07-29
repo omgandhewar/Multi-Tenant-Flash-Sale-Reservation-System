@@ -7,18 +7,16 @@ class website(HttpUser):
     def event_name(self):
         response=self.client.get("/event_name")
         
-    @task
-    def movie_slot(self):
+        if response.status_code==200:
+            data=response.json()
+            print(data)
         
-        event_name = "Coldplay Music of the Spheres Mumbai"
-        response2=self.client.get(f"/movieslot/{event_name}")
+            event_name=data[0]["event_name"]
         
-    @task
-    def reserve(self):
-        event_name = "Coldplay Music of the Spheres Mumbai"
-        quantity=5
+            response2=self.client.get(f"/movieslot/{event_name}")
         
-        response3=self.client.post("/reserve",json={"event_name":event_name,"quantity":quantity})
-        print(response3.headers)
+            quantity=5
+        
+            response3=self.client.post("/reserve",json={"event_name":event_name,"quantity":quantity})
         
         
