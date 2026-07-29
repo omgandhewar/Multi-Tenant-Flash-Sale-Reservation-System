@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, APIRouter
+from fastapi import FastAPI, Depends, APIRouter, HTTPException
 from db.database import get_db
 from sqlalchemy import text
 from schemas.user import User
@@ -21,9 +21,7 @@ def reserve(user:User,db=Depends(get_db)):
     user=result.fetchone()
     
     if not user:
-        return{
-            "message":"tickets are not available"
-        }
+        raise HTTPException(status_code=404,detail="tickets are not available")
     
     tickets=user[0]
         

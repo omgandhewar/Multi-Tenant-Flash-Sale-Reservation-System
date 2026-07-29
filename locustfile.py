@@ -1,4 +1,5 @@
 from locust import HttpUser, task, between
+import random
 
 class website(HttpUser):
     wait_time=between(1,3)
@@ -11,12 +12,23 @@ class website(HttpUser):
             data=response.json()
             print(data)
         
-            event_name=data[0]["event_name"]
-        
+            event_name =random.choice(data["event_name"])["event_name"]
+            
             response2=self.client.get(f"/movieslot/{event_name}")
         
-            quantity=5
         
-            response3=self.client.post("/reserve",json={"event_name":event_name,"quantity":quantity})
+            if response2.status_code==200:
+                quantity=random.choice(range(1,10))
         
+                response3=self.client.post("/reserve",json={"event_name":event_name,"quantity":quantity})
         
+                
+                if response3.status_code == 200:
+                    print(
+                        f"Booked: {event_name}"
+                    )
+                else:
+                    print(
+                        f"Reservation failed {quantity} {event_name}",
+                        response3.text
+                    )
