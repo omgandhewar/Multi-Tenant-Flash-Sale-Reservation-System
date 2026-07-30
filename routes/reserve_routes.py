@@ -10,21 +10,6 @@ router=APIRouter()
 @router.post("/reserve")
 def reserve(user:User,db=Depends(get_db)):
     
-    # result=db.execute(
-    #     text("SELECT quantity FROM tickets WHERE event_name=:event_name AND quantity>=:ticket "),
-    #     {                     
-    #         "event_name":user.event_name,
-    #         "ticket":user.quantity
-    #     }
-    # )
-    
-    # user1=result.fetchone()
-    
-    # if not user1:
-    #     raise HTTPException(status_code=404,detail="tickets are not available")
-    
-    # ticket1=user1[0]
-    
     result=db.execute(
         text("UPDATE tickets SET quantity=quantity- :ticket WHERE event_name=:event_name AND quantity>=:ticket"),
         {
@@ -64,6 +49,17 @@ def movie_slot(event_name,db=Depends(get_db)):
     
     print(user)
     print(type(user))
+    
+    if user["quantity"]==0:
+        raise HTTPException(
+    status_code=404,
+    detail={
+        "error": "Booking Unavailable",
+        "messages":"Tickets for this event are sold out",
+        "event_name": event_name,
+        "status": "CLOSED"
+    }
+)
     
     return{
         "slot":user["quantity"]

@@ -15,6 +15,11 @@ class website(HttpUser):
             event_name =random.choice(data["event_name"])["event_name"]
             
             response2=self.client.get(f"/movieslot/{event_name}")
+            
+            if response2.status_code==404:
+                data=response2.json()
+                
+                print(data["detail"]["messages"])
         
         
             if response2.status_code==200:
