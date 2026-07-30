@@ -70,13 +70,13 @@ def movie_slot(event_name,db=Depends(get_db)):
 def get_eventname(db=Depends(get_db)):
     
     result=db.execute(
-        text("SELECT event_name FROM tickets")
+        text("SELECT event_name,quantity FROM tickets")
     )
     
-    event_name=result.mappings().all()
+    ticket=result.mappings().all()
     
-    print(event_name)
+    print(ticket)
      
     return{
-        "event_name":event_name
+        "event_name":ticket
     }

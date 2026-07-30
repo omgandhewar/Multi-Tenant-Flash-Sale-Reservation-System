@@ -1,5 +1,6 @@
 from locust import HttpUser, task, between
 import random
+import sys
 
 class website(HttpUser):
     wait_time=between(1,3)
@@ -15,12 +16,12 @@ class website(HttpUser):
             event_name =random.choice(data["event_name"])["event_name"]
             
             response2=self.client.get(f"/movieslot/{event_name}")
-            
+           
             if response2.status_code==404:
-                data=response2.json()
-                
-                print(data["detail"]["messages"])
-        
+                for event in data:
+                    if event.get("quantity")==0:
+                        continue
+                    
         
             if response2.status_code==200:
                 quantity=random.choice(range(1,10))
