@@ -20,12 +20,13 @@ class website(HttpUser):
             if response2.status_code==200:
                 quantity=random.choice(range(1,10))
         
-                response3=self.client.post("/reserve",json={"event_name":event_name,"quantity":quantity})
-        
+                response3=self.client.post("/reserve",json={"event_name":event_name,"quantity":quantity}) 
+                
+                data=response3.json()    
                 
                 if response3.status_code == 200:
                     print(
-                        f"Booked: {event_name}"
+                        data["message"]
                     )
                 else:
                     print(
