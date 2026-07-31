@@ -16,11 +16,13 @@ class website(HttpUser):
             event_name =random.choice(data["event_name"])["event_name"]
             
             response2=self.client.get(f"/movieslot/{event_name}")
+            
+            data=response2.json()
            
             if response2.status_code==404:
-                for event in data:
-                    if event.get("quantity")==0:
-                        continue
+                print(
+                    data["detail"]
+                )
                     
         
             if response2.status_code==200:
@@ -28,7 +30,7 @@ class website(HttpUser):
         
                 response3=self.client.post("/reserve",json={"event_name":event_name,"quantity":quantity}) 
                 
-                data=response3.json()    
+                data=response3.json()   
                 
                 if response3.status_code == 200:
                     print(
