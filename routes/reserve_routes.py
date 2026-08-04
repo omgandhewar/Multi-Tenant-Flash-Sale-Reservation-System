@@ -64,7 +64,7 @@ def movie_slot(event_name,db=Depends(get_db)):
     return{
         "slot":user["quantity"]
     }
-    
+  
 
 @router.get("/event_name")
 def get_eventname(db=Depends(get_db)):
@@ -79,4 +79,4 @@ def get_eventname(db=Depends(get_db)):
      
     return{
         "event_name":ticket
-    }
+    } 
