@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from db.database import Base,engine
 from fastapi.middleware.cors import CORSMiddleware
 from routes.reserve_routes import router
+from routes.auth_routes import auth_router
 
 
 def create_app():
@@ -19,6 +20,7 @@ def create_app():
     allow_headers=["*"],
 )
     
+    app.include_router(auth_router)
     app.include_router(router)
     
     Base.metadata.create_all(bind=engine)

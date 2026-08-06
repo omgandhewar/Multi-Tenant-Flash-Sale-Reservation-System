@@ -10,7 +10,7 @@ ACCESS_TOKEN_EXPIRE_TIME=30
 
 
 
-def access_token(data:dict):
+def create_access_token(data:dict):
     
     to_encode=data.copy()
     
@@ -27,15 +27,14 @@ def access_token(data:dict):
     return token
 
 
-def refresh_token(data:dict):
+def create_refresh_token(data:dict):
     
     to_encode=data.copy()
     
     token_expire_time=datetime.utcnow()+timedelta(days=7)
     
-    jti={
-        uuid.uuid4()
-    }
+    jti=str(uuid.uuid4())
+    
     
     to_encode.update({
         "exp":token_expire_time,
