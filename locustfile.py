@@ -5,6 +5,8 @@ import sys
 class website(HttpUser):
     wait_time=between(1,3)
     
+    user=["admin","admin123","admin1234"]
+    
     @task
     def event_name(self):
         response=self.client.get("/event_name")

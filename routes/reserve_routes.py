@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, APIRouter, HTTPException
 from db.database import get_db
+from schemas.user import User_ticket
 from services.reserve_services import user_reserve, usermovie_slot, userget_eventname
 
 
@@ -7,8 +8,8 @@ router=APIRouter()
 
 
 @router.post("/reserve")
-def reserve(db=Depends(get_db)):
-    return user_reserve(db)
+def reserve(user:User_ticket,db=Depends(get_db)):
+    return user_reserve(user,db)
     
     
 @router.get("/movieslot/{event_name}")

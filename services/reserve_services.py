@@ -5,7 +5,7 @@ from schemas.user import User_ticket
 
 
 
-def user_reserve(user:User_ticket,db):
+def user_reserve(user,db):
     
     result=db.execute(
         text("UPDATE tickets SET quantity=quantity- :ticket WHERE event_name=:event_name AND quantity>=:ticket"),
