@@ -50,6 +50,7 @@ def usermovie_slot(event_name,db):
         raise HTTPException(
     status_code=404,
     detail={
+        "slot":user["quantity"],
         "error": "Booking Unavailable",
         "messages":"Tickets for this event are sold out",
         "event_name": event_name,
